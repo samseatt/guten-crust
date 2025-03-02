@@ -1,0 +1,21 @@
+# Node specific artifacts
+node_modules
+dist
+.env
+
+# VSCode settings
+.vscode/
+
+# Logs
+*.log
+*.out
+*.err
+logs/
+
+# Environment-specific Configurations
+.env.*
+*.local
+
+# Misc.
+docs-wip/
+

@@ -25,20 +25,31 @@ export const gutenDatalakeService = {
         (await client.get('/pages', { params: { site, section } })).data,
     getPage: async (site: string, section: string, pageName: string) => 
         (await client.get(`/pages/${pageName}`, { params: { site, section } })).data,
+    getSitePages: async (site: string) => 
+        (await client.get(`/pages_all/${site}`)).data,
     getPageById: async (pageId: string) => 
         (await client.get(`/page_by_id/${pageId}`)).data,
     createPage: async (page: object) => (await client.post('/pages', page)).data,
-    updatePage: async (pageId: number, page: object) => 
-        (await client.put(`/pages/${pageId}`, page)).data,
+    updatePage: async (pageName: string, page: object) => 
+        (await client.put(`/pages/${pageName}`, page)).data,
+    // updatePage: async (pageId: number, page: object) => 
+    //     (await client.put(`/pages/${pageId}`, page)).data,
     deletePage: async (pageId: number) => (await client.delete(`/pages/${pageId}`)).data,
 
     getRefs: async (site: string, section: string, page: string) => 
         (await client.get('/refs', { params: { site, section, page } })).data,
     createRef: async (ref: object) => (await client.post('/refs', ref)).data,
 
+    updateRef: async (refId: number, ref: object) => 
+        (await client.put(`/refs/${refId}`, ref)).data,
+
+    deleteRef: async (refId: number) => (await client.delete(`/refs/${refId}`)).data,
+
     getNotes: async (site: string, section: string, page: string) => 
         (await client.get('/notes', { params: { site, section, page } })).data,
     createNote: async (note: object) => (await client.post('/notes', note)).data,
+
+    deleteNote: async (noteId: number) => (await client.delete(`/notes/${noteId}`)).data,
 
     publishSite: async (siteName: string) => (await client.post(`/publish/${siteName}`)).data,
     getPublishedPage: async (site: string, pageName: string) => 

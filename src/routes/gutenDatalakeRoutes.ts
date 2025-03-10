@@ -152,6 +152,13 @@ router.get('/pages/:page_name', async (req, res, next) => {
     } catch (err) { next(err); }
 });
 
+router.get('/pages_all/:site_name', async (req, res, next) => {
+  try {
+      // const { site } = req.query;
+      res.json(await gutenDatalakeService.getSitePages(req.params.site_name as string));
+  } catch (err) { next(err); }
+});
+
 router.get('/page_by_id/:page_id', async (req, res, next) => {
     try {
         res.json(await gutenDatalakeService.getPageById(req.params.page_id));
@@ -164,15 +171,46 @@ router.post('/pages', async (req, res, next) => {
     } catch (err) { next(err); }
 });
 
-// Publish route
-router.post('/publish/:site_name', async (req, res, next) => {
+// Update Page
+router.put('/pages/:page_name', async (req, res, next) => {
     try {
-        console.log("Calling /publish site with request: ", req.params.site_name);
-        res.json(await gutenDatalakeService.publishSite(req.params.site_name));
-    } catch (err) { next(err); }
-});
+      const pageName = req.params.page_name;
+      console.log('Called /pages/:page_name called with page: ', pageName, req.body);
+      const data = await gutenDatalakeService.updatePage(pageName, req.body);
+      console.log('service.updatePage returned data: ', data)
+      res.json(data.data);
+    } catch (error) {
+      next(error);
+    }
+  });
 
-export default router;
+  // Update Page
+// router.put('/pages/:page_id', async (req, res, next) => {
+//     try {
+//       const pageId = Number(req.params.page_id); // Convert string to number
+//     //   if (isNaN(pageId)) {
+//     //       return res.status(400).json({ error: "Invalid page format" });
+//     //   }
+//       console.log('Called /pages/:page_id called with page id: ', pageId);
+//       const data = await gutenDatalakeService.updatePage(pageId, req.body);
+//       console.log('service.updatePage returned data: ', data)
+//       res.json(data.data);
+//     } catch (error) {
+//       next(error);
+//     }
+//   });
+
+  // Delete Page
+  router.delete('/pages/:page_id', async (req, res, next) => {
+    try {
+      const pageId = Number(req.params.page_id);
+      console.log('router.delete called with page id: ', pageId);
+      const data = await gutenDatalakeService.deletePage(pageId);
+      res.json(data.data);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 // Refs routes
 router.get('/refs', async (req, res, next) => {
@@ -189,6 +227,31 @@ router.post('/refs', async (req, res, next) => {
     } catch (err) { next(err); }
 });
 
+// Update Ref
+router.put('/refs/:ref_id', async (req, res, next) => {
+    try {
+      const refId = Number(req.params.ref_id);
+      console.log('Called /refs/:ref_id called with ref: ', refId, req.body);
+      const data = await gutenDatalakeService.updateRef(refId, req.body);
+      console.log('service.updateRef returned data: ', data)
+      res.json(data.data);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+// Delete Ref
+router.delete('/refs/:ref_id', async (req, res, next) => {
+try {
+    const refId = Number(req.params.ref_id);
+    console.log('router.delete called with ref id: ', refId);
+    const data = await gutenDatalakeService.deleteRef(refId);
+    res.json(data.data);
+} catch (error) {
+    next(error);
+}
+});
+
 // Notes routes
 router.get('/notes', async (req, res, next) => {
     try {
@@ -203,6 +266,30 @@ router.post('/notes', async (req, res, next) => {
         res.json(await gutenDatalakeService.createNote(req.body));
     } catch (err) { next(err); }
 });
+
+  // Delete Note
+  router.delete('/notes/:note_id', async (req, res, next) => {
+    try {
+      const noteId = Number(req.params.note_id);
+      console.log('router.delete called with note id: ', noteId);
+      const data = await gutenDatalakeService.deleteNote(noteId);
+      res.json(data.data);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+// Publish route
+router.post('/publish/:site_name', async (req, res, next) => {
+    try {
+        console.log("Calling /publish site with request: ", req.params.site_name);
+        res.json(await gutenDatalakeService.publishSite(req.params.site_name));
+    } catch (err) { next(err); }
+});
+
+export default router;
+
+
 
 
 
@@ -224,3 +311,4 @@ router.post('/notes', async (req, res, next) => {
 // });
 
 // export default router;
+

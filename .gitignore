@@ -19,3 +19,7 @@ logs/
 # Misc.
 docs-wip/
 
+# Local artifacts and safe configuration examples
+.DS_Store
+*.tsbuildinfo
+!.env.example

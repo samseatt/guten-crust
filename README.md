@@ -26,3 +26,5 @@ src/services/ — Datalake HTTP client
 src/middlewares/ — error normalization
 src/config/ — environment and logging
 ```
+
+[Editorial references and notes](../guten-datalake/docs/editorial-refs-and-notes.md) support scoped CRUD, including `PUT /notes/:id`. Both deletion endpoints require `site`, `section`, and `page` query parameters.

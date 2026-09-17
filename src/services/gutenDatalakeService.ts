@@ -51,13 +51,15 @@ export const gutenDatalakeService = {
     updateRef: async (refId: number, ref: object) => 
         (await client.put(`/refs/${refId}`, ref)).data,
 
-    deleteRef: async (refId: number) => (await client.delete(`/refs/${refId}`)).data,
+    deleteRef: async (refId: number, scope: object) => (await client.delete(`/refs/${refId}`, { params: scope })).data,
 
     getNotes: async (site: string, section: string, page: string) => 
         (await client.get('/notes', { params: { site, section, page } })).data,
     createNote: async (note: object) => (await client.post('/notes', note)).data,
 
-    deleteNote: async (noteId: number) => (await client.delete(`/notes/${noteId}`)).data,
+    updateNote: async (noteId: number, note: object) => (await client.put(`/notes/${noteId}`, note)).data,
+
+    deleteNote: async (noteId: number, scope: object) => (await client.delete(`/notes/${noteId}`, { params: scope })).data,
 
     publishSite: async (siteName: string) => (await client.post(`/publish/${siteName}`)).data,
     getPublishedPage: async (site: string, pageName: string) => 

@@ -212,72 +212,49 @@ router.put('/pages/:page_name', async (req, res, next) => {
     }
   });
 
-// Refs routes
+// Editorial refs; Datalake validates page scope and request values.
 router.get('/refs', async (req, res, next) => {
     try {
         const { site, section, page } = req.query;
         res.json(await gutenDatalakeService.getRefs(site as string, section as string, page as string));
-    } catch (err) { next(err); }
+    } catch (error) { next(error); }
 });
-
 router.post('/refs', async (req, res, next) => {
+    try { res.json(await gutenDatalakeService.createRef(req.body)); }
+    catch (error) { next(error); }
+});
+router.put('/refs/:id', async (req, res, next) => {
+    try { res.json(await gutenDatalakeService.updateRef(Number(req.params.id), req.body)); }
+    catch (error) { next(error); }
+});
+router.delete('/refs/:id', async (req, res, next) => {
     try {
-        console.log('$$$$$$$$$$$$$ post /refs called with data: ', req.body)
-        res.json(await gutenDatalakeService.createRef(req.body));
-    } catch (err) { next(err); }
+        const { site, section, page } = req.query;
+        res.json(await gutenDatalakeService.deleteRef(Number(req.params.id), { site, section, page }));
+    } catch (error) { next(error); }
 });
 
-// Update Ref
-router.put('/refs/:ref_id', async (req, res, next) => {
-    try {
-      const refId = Number(req.params.ref_id);
-      console.log('Called /refs/:ref_id called with ref: ', refId, req.body);
-      const data = await gutenDatalakeService.updateRef(refId, req.body);
-      console.log('service.updateRef returned data: ', data)
-      res.json(data);
-    } catch (error) {
-      next(error);
-    }
-  });
-
-// Delete Ref
-router.delete('/refs/:ref_id', async (req, res, next) => {
-try {
-    const refId = Number(req.params.ref_id);
-    console.log('router.delete called with ref id: ', refId);
-    const data = await gutenDatalakeService.deleteRef(refId);
-    res.json(data);
-} catch (error) {
-    next(error);
-}
-});
-
-// Notes routes
+// Editorial notes; Datalake validates page scope and request values.
 router.get('/notes', async (req, res, next) => {
     try {
         const { site, section, page } = req.query;
         res.json(await gutenDatalakeService.getNotes(site as string, section as string, page as string));
-    } catch (err) { next(err); }
+    } catch (error) { next(error); }
 });
-
 router.post('/notes', async (req, res, next) => {
-    try {
-        console.log('$$$$$$$$$$$$$ post /notes called with data: ', req.body)
-        res.json(await gutenDatalakeService.createNote(req.body));
-    } catch (err) { next(err); }
+    try { res.json(await gutenDatalakeService.createNote(req.body)); }
+    catch (error) { next(error); }
 });
-
-  // Delete Note
-  router.delete('/notes/:note_id', async (req, res, next) => {
+router.put('/notes/:id', async (req, res, next) => {
+    try { res.json(await gutenDatalakeService.updateNote(Number(req.params.id), req.body)); }
+    catch (error) { next(error); }
+});
+router.delete('/notes/:id', async (req, res, next) => {
     try {
-      const noteId = Number(req.params.note_id);
-      console.log('router.delete called with note id: ', noteId);
-      const data = await gutenDatalakeService.deleteNote(noteId);
-      res.json(data);
-    } catch (error) {
-      next(error);
-    }
-  });
+        const { site, section, page } = req.query;
+        res.json(await gutenDatalakeService.deleteNote(Number(req.params.id), { site, section, page }));
+    } catch (error) { next(error); }
+});
 
 // Publish route
 router.post('/publish/:site_name', async (req, res, next) => {

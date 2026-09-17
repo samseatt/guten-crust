@@ -32,3 +32,7 @@ src/config/ — environment and logging
 See [per-site publishing](../guten-datalake/docs/publishing.md) for the editor workflow, API, migration, and initial publication seeding. Portal/View Draft reads draft; Guten Sites reads published content only.
 
 `/health/live` checks the process. `/health/ready` verifies Datalake readiness with a bounded timeout and returns 503 when unavailable. Request payload debug logging is removed. Morgan writes access logs to stdout so the supervisor/container can capture and rotate them; the old access.log is no longer appended. See the [acceptance guide](../guten/docs/testing.md).
+
+## Containers
+
+The Dockerfile and .dockerignore package this service without local secrets, dumps, installed dependencies or content media. Build/start it using the sibling coordination repository’s [Docker Compose guide](../guten/docs/docker.md). The container rehearsal uses a separate empty database and alternate localhost ports.

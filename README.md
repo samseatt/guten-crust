@@ -1,6 +1,6 @@
 # Guten Crust
 
-Express/TypeScript gateway on port **8000**. Its active routes are mounted at /api/guten and forward to Guten Datalake at http://localhost:8005/guten. Persistence stays in Datalake. Current logging uses Morgan; authentication is not enforced. API response and mutation inconsistencies remain application follow-up work.
+Express/TypeScript gateway on port **8000**. Its active routes are mounted at /api/guten and forward to Guten Datalake at http://localhost:8005/guten. Persistence stays in Datalake. Current logging uses Morgan; authentication is not enforced.
 
 ## Local development
 
@@ -12,7 +12,7 @@ make run SERVICE=crust
 make check SERVICE=crust
 ```
 
-The launcher uses the existing local ts-node dependency. Builds use TypeScript compilation. Dependencies must already be installed. PORT and GUTEN_DATALAKE_URL are configured through the local environment/.env; do not commit credentials.
+The launcher uses the existing local ts-node dependency. Builds use TypeScript compilation. Dependencies must already be installed. `PORT`, `GUTEN_DATALAKE_URL`, and comma-separated `CORS_ORIGINS` are configured through the local environment/`.env`; see `.env.example`. The default browser origins are localhost:3000 and localhost:3001. CORS controls browser access and is not authentication. Do not commit credentials.
 
 Active code is in src/routes/gutenDatalakeRoutes.ts and src/services/gutenDatalakeService.ts, mounted by src/routes/index.ts. Empty historical publisher/sites/auth route placeholders have been removed.
 
@@ -30,3 +30,5 @@ src/config/ — environment and logging
 [Editorial references and notes](../guten-datalake/docs/editorial-refs-and-notes.md) support scoped CRUD, including `PUT /notes/:id`. Both deletion endpoints require `site`, `section`, and `page` query parameters.
 
 See [per-site publishing](../guten-datalake/docs/publishing.md) for the editor workflow, API, migration, and initial publication seeding. Portal/View Draft reads draft; Guten Sites reads published content only.
+
+`/health/live` checks the process. `/health/ready` verifies Datalake readiness with a bounded timeout and returns 503 when unavailable. Request payload debug logging is removed. Morgan writes access logs to stdout so the supervisor/container can capture and rotate them; the old access.log is no longer appended. See the [acceptance guide](../guten/docs/testing.md).

@@ -6,7 +6,6 @@ const router = Router();
 // Site routes
 router.get('/sites', async (req, res, next) => {
     try {
-        console.log('GET /sites called');
         res.json(await gutenDatalakeService.getSites());
     } catch (err) { next(err); }
 });
@@ -27,12 +26,9 @@ router.post('/sites', async (req, res, next) => {
 router.put('/sites/:site_name', async (req, res, next) => {
     try {
       const siteName = req.params.site_name;
-      console.log('Called /sites/:site_name called with site name: ', siteName);
       const data = await gutenDatalakeService.updateSite(siteName, req.body);
-      console.log('service.updateSite returned data: ', data)
       res.json(data);
     } catch (error) {
-        console.log('Exception with errro: ', error);
         next(error);
     }
   });
@@ -79,7 +75,6 @@ router.put('/sites/:site_name', async (req, res, next) => {
 // Sections routes
 router.get('/sections', async (req, res, next) => {
     try {
-        console.log('GET /sections called');
         const { site } = req.query;
         res.json(await gutenDatalakeService.getSections(site as string));
     } catch (err) { next(err); }
@@ -87,7 +82,6 @@ router.get('/sections', async (req, res, next) => {
 
 router.get('/sections/:section_name', async (req, res, next) => {
     try {
-        console.log('GET /sections/:section_name called');
         const { site } = req.query;
         res.json(await gutenDatalakeService.getSection(req.params.section_name, site as string));
     } catch (err) { next(err); }
@@ -96,14 +90,12 @@ router.get('/sections/:section_name', async (req, res, next) => {
 // Get a section by its ID only
 router.get('/section_by_id/:section_id', async (req, res, next) => {
     try {
-        console.log('GET /sections_by_id/:section_id called');
         res.json(await gutenDatalakeService.getSectionById(req.params.section_id));
     } catch (err) { next(err); }
 });
 
 router.post('/sections', async (req, res, next) => {
     try {
-        console.log('POST /sections called with', req.body);
         res.json(await gutenDatalakeService.createSection(req.body));
     } catch (err) { next(err); }
 });
@@ -116,9 +108,7 @@ router.put('/sections/:section_id', async (req, res, next) => {
     //   if (isNaN(sectionId)) {
     //       return res.status(400).json({ error: "Invalid section_id format" });
     //   }
-      console.log('Called /sections/:section_id called with section id: ', sectionId);
       const data = await gutenDatalakeService.updateSection(sectionId, req.body);
-      console.log('service.updateSection returned data: ', data)
       res.json(data);
     } catch (error) {
       next(error);
@@ -129,7 +119,6 @@ router.put('/sections/:section_id', async (req, res, next) => {
   router.delete('/sections/:section_id', async (req, res, next) => {
     try {
       const sectionId = Number(req.params.section_id);
-      console.log('router.delete called with section id: ', sectionId);
       const data = await gutenDatalakeService.deleteSection(sectionId);
       res.json(data);
     } catch (error) {
@@ -175,9 +164,7 @@ router.post('/pages', async (req, res, next) => {
 router.put('/pages/:page_name', async (req, res, next) => {
     try {
       const pageName = req.params.page_name;
-      console.log('Called /pages/:page_name called with page: ', pageName, req.body);
       const data = await gutenDatalakeService.updatePage(pageName, req.body);
-      console.log('service.updatePage returned data: ', data)
       res.json(data);
     } catch (error) {
       next(error);
@@ -191,9 +178,7 @@ router.put('/pages/:page_name', async (req, res, next) => {
 //     //   if (isNaN(pageId)) {
 //     //       return res.status(400).json({ error: "Invalid page format" });
 //     //   }
-//       console.log('Called /pages/:page_id called with page id: ', pageId);
 //       const data = await gutenDatalakeService.updatePage(pageId, req.body);
-//       console.log('service.updatePage returned data: ', data)
 //       res.json(data);
 //     } catch (error) {
 //       next(error);
@@ -204,7 +189,6 @@ router.put('/pages/:page_name', async (req, res, next) => {
   router.delete('/pages/:page_id', async (req, res, next) => {
     try {
       const pageId = Number(req.params.page_id);
-      console.log('router.delete called with page id: ', pageId);
       const data = await gutenDatalakeService.deletePage(pageId);
       res.json(data);
     } catch (error) {

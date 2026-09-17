@@ -2,10 +2,18 @@ import axios from 'axios';
 import { GUTEN_DATALAKE_URL } from '../config/dotenv';
 
 const client = axios.create({
-    baseURL: `${GUTEN_DATALAKE_URL}/guten`
+    baseURL: `${GUTEN_DATALAKE_URL}/guten`,
+    timeout: 15000
 });
 
 export const gutenDatalakeService = {
+    getLanding: async (site: string, section?: string) =>
+        (await client.get(`/sites/${encodeURIComponent(site)}/landing`, { params: { section } })).data,
+    reorderSections: async (site: string, order: object) =>
+        (await client.put(`/sites/${encodeURIComponent(site)}/sections/order`, order)).data,
+    reorderPages: async (site: string, section: string, order: object) =>
+        (await client.put(`/sites/${encodeURIComponent(site)}/sections/${encodeURIComponent(section)}/pages/order`, order)).data,
+
     getSites: async () => (await client.get('/sites')).data,
     getSite: async (siteName: string) => (await client.get(`/sites/${siteName}`)).data,
     createSite: async (site: object) => (await client.post('/sites', site)).data,

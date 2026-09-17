@@ -30,7 +30,7 @@ router.put('/sites/:site_name', async (req, res, next) => {
       console.log('Called /sites/:site_name called with site name: ', siteName);
       const data = await gutenDatalakeService.updateSite(siteName, req.body);
       console.log('service.updateSite returned data: ', data)
-      res.json(data.data);
+      res.json(data);
     } catch (error) {
         console.log('Exception with errro: ', error);
         next(error);
@@ -42,7 +42,7 @@ router.put('/sites/:site_name', async (req, res, next) => {
 //     try {
 //       const siteName = req.params.site_name;
 //       const data = await gutenDatalakeService.updateSite(`/guten/sites/${siteName}`, req.body);
-//       res.json(data.data);
+//       res.json(data);
 //     } catch (error) {
 //       next(error);
 //     }
@@ -52,8 +52,8 @@ router.put('/sites/:site_name', async (req, res, next) => {
   router.delete('/sites/:site_name', async (req, res, next) => {
     try {
       const siteName = req.params.site_name;
-      const data = await gutenDatalakeService.deleteSite(`/guten/sites/${siteName}`);
-      res.json(data.data);
+      const data = await gutenDatalakeService.deleteSite(siteName);
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -69,8 +69,8 @@ router.put('/sites/:site_name', async (req, res, next) => {
 // router.delete('/sites/:site_name', async (req, res, next) => {
 //     try {
 //       const siteName = req.params.site_name;
-//       const data = await gutenDatalakeService.deleteSite(`/guten/sites/${siteName}`);
-//       res.json(data.data);
+//       const data = await gutenDatalakeService.deleteSite(siteName);
+//       res.json(data);
 //     } catch (error) {
 //       next(error);
 //     }
@@ -119,7 +119,7 @@ router.put('/sections/:section_id', async (req, res, next) => {
       console.log('Called /sections/:section_id called with section id: ', sectionId);
       const data = await gutenDatalakeService.updateSection(sectionId, req.body);
       console.log('service.updateSection returned data: ', data)
-      res.json(data.data);
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -131,7 +131,7 @@ router.put('/sections/:section_id', async (req, res, next) => {
       const sectionId = Number(req.params.section_id);
       console.log('router.delete called with section id: ', sectionId);
       const data = await gutenDatalakeService.deleteSection(sectionId);
-      res.json(data.data);
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -178,7 +178,7 @@ router.put('/pages/:page_name', async (req, res, next) => {
       console.log('Called /pages/:page_name called with page: ', pageName, req.body);
       const data = await gutenDatalakeService.updatePage(pageName, req.body);
       console.log('service.updatePage returned data: ', data)
-      res.json(data.data);
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -194,7 +194,7 @@ router.put('/pages/:page_name', async (req, res, next) => {
 //       console.log('Called /pages/:page_id called with page id: ', pageId);
 //       const data = await gutenDatalakeService.updatePage(pageId, req.body);
 //       console.log('service.updatePage returned data: ', data)
-//       res.json(data.data);
+//       res.json(data);
 //     } catch (error) {
 //       next(error);
 //     }
@@ -206,7 +206,7 @@ router.put('/pages/:page_name', async (req, res, next) => {
       const pageId = Number(req.params.page_id);
       console.log('router.delete called with page id: ', pageId);
       const data = await gutenDatalakeService.deletePage(pageId);
-      res.json(data.data);
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -234,7 +234,7 @@ router.put('/refs/:ref_id', async (req, res, next) => {
       console.log('Called /refs/:ref_id called with ref: ', refId, req.body);
       const data = await gutenDatalakeService.updateRef(refId, req.body);
       console.log('service.updateRef returned data: ', data)
-      res.json(data.data);
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -246,7 +246,7 @@ try {
     const refId = Number(req.params.ref_id);
     console.log('router.delete called with ref id: ', refId);
     const data = await gutenDatalakeService.deleteRef(refId);
-    res.json(data.data);
+    res.json(data);
 } catch (error) {
     next(error);
 }
@@ -273,7 +273,7 @@ router.post('/notes', async (req, res, next) => {
       const noteId = Number(req.params.note_id);
       console.log('router.delete called with note id: ', noteId);
       const data = await gutenDatalakeService.deleteNote(noteId);
-      res.json(data.data);
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -287,28 +287,22 @@ router.post('/publish/:site_name', async (req, res, next) => {
     } catch (err) { next(err); }
 });
 
+router.get('/sites/:site_name/landing', async (req, res, next) => {
+    try {
+        res.json(await gutenDatalakeService.getLanding(req.params.site_name, req.query.section as string | undefined));
+    } catch (error) { next(error); }
+});
+
+router.put('/sites/:site_name/sections/order', async (req, res, next) => {
+    try {
+        res.json(await gutenDatalakeService.reorderSections(req.params.site_name, req.body));
+    } catch (error) { next(error); }
+});
+
+router.put('/sites/:site_name/sections/:section_name/pages/order', async (req, res, next) => {
+    try {
+        res.json(await gutenDatalakeService.reorderPages(req.params.site_name, req.params.section_name, req.body));
+    } catch (error) { next(error); }
+});
+
 export default router;
-
-
-
-
-
-
-// import express, { Request, Response } from "express";
-// import { fetchPageData } from "../services/gutenDatalakeService";
-
-// const router = express.Router();
-
-// // GET Page Content
-// router.get("/contents", async (req: Request, res: Response) => {
-//   try {
-//     const { name } = req.query as { name: string };
-//     const data = await fetchPageData(name);
-//     res.json(data);
-//   } catch (error) {
-//     res.status(500).json({ error: (error as Error).message });
-//   }
-// });
-
-// export default router;
-

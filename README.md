@@ -17,3 +17,12 @@ The launcher uses the existing local ts-node dependency. Builds use TypeScript c
 Active code is in src/routes/gutenDatalakeRoutes.ts and src/services/gutenDatalakeService.ts, mounted by src/routes/index.ts. Empty historical publisher/sites/auth route placeholders have been removed.
 
 See [local operations](../guten/README.md) and [storage and Git conventions](../guten/docs/storage-and-git.md).
+
+## Project structure
+
+```text
+src/routes/ — frontend API routes
+src/services/ — Datalake HTTP client
+src/middlewares/ — error normalization
+src/config/ — environment and logging
+```

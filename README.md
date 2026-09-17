@@ -28,3 +28,5 @@ src/config/ — environment and logging
 ```
 
 [Editorial references and notes](../guten-datalake/docs/editorial-refs-and-notes.md) support scoped CRUD, including `PUT /notes/:id`. Both deletion endpoints require `site`, `section`, and `page` query parameters.
+
+See [per-site publishing](../guten-datalake/docs/publishing.md) for the editor workflow, API, migration, and initial publication seeding. Portal/View Draft reads draft; Guten Sites reads published content only.

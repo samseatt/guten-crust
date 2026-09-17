@@ -61,9 +61,15 @@ export const gutenDatalakeService = {
 
     deleteNote: async (noteId: number, scope: object) => (await client.delete(`/notes/${noteId}`, { params: scope })).data,
 
-    publishSite: async (siteName: string) => (await client.post(`/publish/${siteName}`)).data,
-    getPublishedPage: async (site: string, pageName: string) => 
-        (await client.get(`/published/pages/${pageName}`, { params: { site } })).data
+    publicationStatuses: async () => (await client.get('/publication-status')).data,
+    publicationStatus: async (site: string) => (await client.get(`/sites/${encodeURIComponent(site)}/publication`)).data,
+    publishSite: async (site: string, request: object) => (await client.post(`/publish/${encodeURIComponent(site)}`, request, { timeout: 45000 })).data,
+    unpublishSite: async (site: string, request: object) => (await client.delete(`/sites/${encodeURIComponent(site)}/publication`, { data: request, timeout: 45000 })).data,
+    getPublishedLanding: async (site: string, section?: string) =>
+        (await client.get(`/published/sites/${encodeURIComponent(site)}/landing`, { params: { section } })).data,
+    getPublishedBundle: async (site: string, section: string, page: string) =>
+        (await client.get(`/published/sites/${encodeURIComponent(site)}/page`, { params: { section, page } })).data
+
 };
 
 

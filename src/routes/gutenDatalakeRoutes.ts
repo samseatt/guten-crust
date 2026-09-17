@@ -256,12 +256,34 @@ router.delete('/notes/:id', async (req, res, next) => {
     } catch (error) { next(error); }
 });
 
-// Publish route
+// Publication commands and explicitly published-only reads.
+router.get('/publication-status', async (_req, res, next) => {
+    try { res.json(await gutenDatalakeService.publicationStatuses()); }
+    catch (error) { next(error); }
+});
+router.get('/sites/:site_name/publication', async (req, res, next) => {
+    try { res.json(await gutenDatalakeService.publicationStatus(req.params.site_name)); }
+    catch (error) { next(error); }
+});
 router.post('/publish/:site_name', async (req, res, next) => {
+    try { res.json(await gutenDatalakeService.publishSite(req.params.site_name, req.body)); }
+    catch (error) { next(error); }
+});
+router.delete('/sites/:site_name/publication', async (req, res, next) => {
+    try { res.json(await gutenDatalakeService.unpublishSite(req.params.site_name, req.body)); }
+    catch (error) { next(error); }
+});
+router.get('/published/sites/:site_name/landing', async (req, res, next) => {
+    try { res.json(await gutenDatalakeService.getPublishedLanding(req.params.site_name, req.query.section as string | undefined)); }
+    catch (error) { next(error); }
+});
+router.get('/published/sites/:site_name/page', async (req, res, next) => {
     try {
-        console.log("Calling /publish site with request: ", req.params.site_name);
-        res.json(await gutenDatalakeService.publishSite(req.params.site_name));
-    } catch (err) { next(err); }
+        if (typeof req.query.section !== 'string' || typeof req.query.page !== 'string') {
+            res.status(422).json({ error: { message: 'Section and page are required.' } }); return;
+        }
+        res.json(await gutenDatalakeService.getPublishedBundle(req.params.site_name, req.query.section, req.query.page));
+    } catch (error) { next(error); }
 });
 
 router.get('/sites/:site_name/landing', async (req, res, next) => {

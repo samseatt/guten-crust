@@ -7,7 +7,7 @@ COPY src ./src
 RUN ./node_modules/.bin/tsc && npm prune --omit=dev
 
 FROM node:22-bookworm-slim AS runtime
-ENV NODE_ENV=production PORT=8000
+ENV NODE_ENV=production PORT=8000 HOST=0.0.0.0
 WORKDIR /app
 COPY --from=build --chown=node:node /app/node_modules ./node_modules
 COPY --from=build --chown=node:node /app/dist ./dist

@@ -1,6 +1,6 @@
 # Guten Crust
 
-Express/TypeScript gateway on port **8000**. Its active routes are mounted at /api/guten and forward to Guten Datalake at http://localhost:8005/guten. Persistence stays in Datalake. Current logging uses Morgan; authentication is not enforced.
+Express/TypeScript gateway on port **8000**. Its active routes are mounted at /api/guten and forward to Guten Datalake at http://localhost:8005/guten. Persistence stays in Datalake. Current logging uses Morgan. Docker editorial access is protected by the authentication gateway; Crust itself trusts the private application network and must not be publicly exposed. Native development binds to localhost.
 
 ## Local development
 
@@ -12,7 +12,7 @@ make run SERVICE=crust
 make check SERVICE=crust
 ```
 
-The launcher uses the existing local ts-node dependency. Builds use TypeScript compilation. Dependencies must already be installed. `PORT`, `GUTEN_DATALAKE_URL`, and comma-separated `CORS_ORIGINS` are configured through the local environment/`.env`; see `.env.example`. The default browser origins are localhost:3000 and localhost:3001. CORS controls browser access and is not authentication. Do not commit credentials.
+The launcher uses the existing local ts-node dependency. Builds use TypeScript compilation. Dependencies must already be installed. `HOST` (defaults to 127.0.0.1; Docker overrides it internally), `PORT`, `GUTEN_DATALAKE_URL`, and comma-separated `CORS_ORIGINS` are configured through the local environment/`.env`; see `.env.example`. The default browser origins are localhost:3000 and localhost:3001. CORS controls browser access and is not authentication. Do not commit credentials.
 
 Active code is in src/routes/gutenDatalakeRoutes.ts and src/services/gutenDatalakeService.ts, mounted by src/routes/index.ts. Empty historical publisher/sites/auth route placeholders have been removed.
 
